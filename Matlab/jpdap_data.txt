@@ -1,0 +1,27 @@
+* Uncertain Arrhenius parameters [A/An/AE/AnE]
+AnE
+* Uncertainty type [3slog10k/2slog10k/1slog10k/1slnk/2slnk/3slnk]
+3slog10k
+* Number of data (1st row),data in rows: temperature uncertainty
+18
+ 298    0.28
+ 400    0.20
+ 500    0.21
+ 600    0.23
+ 700    0.25
+ 800    0.28
+ 900    0.29
+1000    0.3
+1100    0.32
+1200    0.36
+1300    0.39
+1400    0.42
+1500    0.45
+1600    0.48
+1700    0.51
+1800    0.54
+1900    0.56
+2000    0.59
+* Test sets: number of sets (1st row),sets in rows [sa,sn,se,ran,rae,rne, omit missing] a=lnA,e=E/R
+1
+5.017571471995      0.6852873869410       389.8580211520     -0.9986861503398      0.9974965317157     -0.9925623408121
