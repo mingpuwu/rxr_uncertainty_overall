@@ -1,4 +1,4 @@
-function ulimits_TH(txtname,increment,range_l,range_u)
+function ulimits(txtname,increment,range_l,range_u)
 
 % txtname:
 %       name of the text file that contains the input data
@@ -536,38 +536,34 @@ while (isequal(useall,'n')==1)
             end
         end
     end
-    
-    p=plot(1000./Xnew(1:Xsize_1-1,:)',Ynew(1:Xsize_1-1,:)','--.','LineWidth',0.2)
+
+    [tt_Xnew,tt_Ynew,tt_numbering_new,tt_paper_type_new,tt_paper_ID_new] = taotao(txtname,increment,range_l,range_u);
+    full_paper_type_new = vertcat(paper_type_new(:,1),tt_paper_type_new);
+    full_paper_ID_new = vertcat(paper_ID_new,tt_paper_ID_new);
+
+    p1 = plot(1000./Xnew(1:Xsize_1-1,:)',Ynew(1:Xsize_1-1,:)','--.','LineWidth',0.2);
     xlabel('1000/T')
     ylabel('log_{10}(k)')
     grid on
     hold on
-    gridLegend( p )
 
-    Xnew(Xsize_1,:)
-    Ynew(Xsize_1,:)
-    plot(1000./Xnew(Xsize_1,:),Ynew(Xsize_1,:),'-r','Linewidth',1.5)
+    p2 = plot(1000./Xnew(Xsize_1,:),Ynew(Xsize_1,:),'-r','Linewidth',1.5);
     title('Arrhenius plot')
     hold on
-    
     [tt_Xnew,tt_Ynew,tt_numbering_new,tt_paper_type_new,tt_paper_ID_new] = taotao(txtname,increment,range_l,range_u);
-    plot(1000./tt_Xnew(1,:),tt_Ynew(1,:),'Color',[0.1 0.8 0.9] ,'Linewidth',1.5)%'Color',[0.1 0.6 0.1] NPU;'Color',[0.1 0.8 0.9] Taotao; '-m' henry
+    p3 = plot(1000./tt_Xnew(1,:),tt_Ynew(1,:),'Color',[0.1 0.8 0.9] ,'Linewidth',1.5)%'Color',[0.1 0.6 0.1] NPU;'Color',[0.1 0.8 0.9] Taotao; '-m' henry
     hold on
-    plot(1000./tt_Xnew(2,:),tt_Ynew(2,:),'-m','Linewidth',1.5)
+    p4 = plot(1000./tt_Xnew(2,:),tt_Ynew(2,:),'-m','Linewidth',1.5)
     hold on
-    plot(1000./tt_Xnew(3,:),tt_Ynew(3,:),'Color',[0.1 0.6 0.1],'Linewidth',1.5)
+    p5 = plot(1000./tt_Xnew(3,:),tt_Ynew(3,:),'Color',[0.1 0.6 0.1],'Linewidth',1.5)
     hold on
-    plot(1000./tt_Xnew(4,:),tt_Ynew(4,:),'Color',[0.6 0.3 0.4],'Linewidth',1.5)
+    p6 = plot(1000./tt_Xnew(4,:),tt_Ynew(4,:),'Color',[0.6 0.3 0.4],'Linewidth',1.5)
     title('Arrhenius plot')
+
+    p = [p1' p2 p3 p4 p5 p6]
+
+    gridLegend(p,3,strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside')
     hold on
-
-    
-    
-
-    full_paper_type_new = vertcat(paper_type_new(:,1),tt_paper_type_new);
-    full_paper_ID_new = vertcat(paper_ID_new,tt_paper_ID_new);
-    legend(strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside')
-    % hold on
 
     %plot(1000./Xnew_gp(end,:),Ynew_gp(end,:),'-r','Linewidth',1.5)
     %title('Arrhenius plot')

@@ -13,7 +13,9 @@ function[Xnew,Ynew,numbering_new, paper_type_new, paper_ID_new] = taotao(txtname
             JustSaveTaoTao = 1;
         end
     end
-    a = 1;
+
+    a = 3;
+
     if(JustSaveTaoTao == 1)
         paper_ID = paper_ID(N-a:N);
         paper_type = paper_type(N-a:N);
