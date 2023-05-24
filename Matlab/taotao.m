@@ -7,16 +7,21 @@ function[Xnew,Ynew,numbering_new, paper_type_new, paper_ID_new] = taotao(txtname
 
     [N,M]=size(Tlower);
     
-    JustSaveTaoTao = 0;
+    CompareCount = 0;
     for i=1:N
         if(strcmp(paper_type(i),'Compare') == 1)
-            JustSaveTaoTao = 1;
+            CompareCount = CompareCount + 1;
+            continue;
+        end
+
+        if(CompareCount > 0)
+            CompareCount = CompareCount + 1;
         end
     end
 
-    a = 3;
+    a = CompareCount-1;
 
-    if(JustSaveTaoTao == 1)
+    if(CompareCount > 0)
         paper_ID = paper_ID(N-a:N);
         paper_type = paper_type(N-a:N);
         considered = considered(N-a:N);
@@ -177,7 +182,6 @@ function[Xnew,Ynew,numbering_new, paper_type_new, paper_ID_new] = taotao(txtname
 
     for i=1:N
 
-
         if considered(i)~=2
             for k=1:inside_inc+2
                 if(Xcoord(i,k)~=0)
@@ -243,9 +247,7 @@ function[Xnew,Ynew,numbering_new, paper_type_new, paper_ID_new] = taotao(txtname
 
         if (f_type(i)==1 || f_type(i)==2||f_type(i)==3)
 
-
             Xadded(i,:)=Xcoord(i,:);
-
 
             for k=1:inside_inc+2
                 if (f_type(i)==1)

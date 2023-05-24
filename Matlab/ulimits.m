@@ -69,15 +69,21 @@ while (isequal(useall,'n')==1)
 
     [N,M]=size(Tlower);
     
-    HaveCompareFlag = 0;
+    CompareCount = 0;
     for i=1:N
         if(strcmp(paper_type(i),'Compare') == 1)
-            N = N - 4;%如果compare有3个就减3
-            HaveCompareFlag = 1;
+            CompareCount = CompareCount + 1;
+            continue;
+        end
+
+        if(CompareCount > 0)
+            CompareCount = CompareCount + 1;
         end
     end
 
-    if(HaveCompareFlag == 1)
+    N = N - CompareCount;%如果compare有3个就减3
+
+    if(CompareCount > 0)
         paper_ID = paper_ID(1:N);
         paper_type = paper_type(1:N);
     end
@@ -551,18 +557,24 @@ while (isequal(useall,'n')==1)
     title('Arrhenius plot')
     hold on
     [tt_Xnew,tt_Ynew,tt_numbering_new,tt_paper_type_new,tt_paper_ID_new] = taotao(txtname,increment,range_l,range_u);
-    p3 = plot(1000./tt_Xnew(1,:),tt_Ynew(1,:),'Color',[0.1 0.8 0.9] ,'Linewidth',1.5)%'Color',[0.1 0.6 0.1] NPU;'Color',[0.1 0.8 0.9] Taotao; '-m' henry
+    p3 = plot(1000./tt_Xnew(1,:),tt_Ynew(1,:),'Color',[0.1 0.8 0.9] ,'Linewidth',1.5);%'Color',[0.1 0.6 0.1] NPU;'Color',[0.1 0.8 0.9] Taotao; '-m' henry
     hold on
-    p4 = plot(1000./tt_Xnew(2,:),tt_Ynew(2,:),'-m','Linewidth',1.5)
+    p4 = plot(1000./tt_Xnew(2,:),tt_Ynew(2,:),'-m','Linewidth',1.5);
     hold on
-    p5 = plot(1000./tt_Xnew(3,:),tt_Ynew(3,:),'Color',[0.1 0.6 0.1],'Linewidth',1.5)
+    p5 = plot(1000./tt_Xnew(3,:),tt_Ynew(3,:),'Color',[0.1 0.6 0.1],'Linewidth',1.5);
     hold on
-    p6 = plot(1000./tt_Xnew(4,:),tt_Ynew(4,:),'Color',[0.6 0.3 0.4],'Linewidth',1.5)
+
+    %有4个compare的时候才画这个，一般都是3个
+    if(CompareCount == 4)
+        p6 = plot(1000./tt_Xnew(4,:),tt_Ynew(4,:),'Color',[0.6 0.3 0.4],'Linewidth',1.5);
+        p = [p1' p2 p3 p4 p5 p6];
+    else
+        p = [p1' p2 p3 p4 p5];
+    end
+    
     title('Arrhenius plot')
 
-    p = [p1' p2 p3 p4 p5 p6]
-
-    gridLegend(p,2,strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside')
+    gridLegend(p,2,strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside');
     hold on
 
     %plot(1000./Xnew_gp(end,:),Ynew_gp(end,:),'-r','Linewidth',1.5)

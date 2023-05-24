@@ -57,10 +57,10 @@ def FitHandler(T,K):
     plt.legend(loc = 4) #指定legend的位置右下角
     plt.title('curve_fit')
     plt.show()
-    return A,n,EAR,xvals,yvals
+    return A,n,EAR
 
 def Fit(fileName, reactionnum):
-    CompareDataCount = 0
+    Needignore = False
     Comparex = []
     Comparey = []
     fd = open(fileName,encoding="utf-8")
@@ -82,14 +82,13 @@ def Fit(fileName, reactionnum):
         if(OneLine[1] == 'fit'):
             continue
 
-        #当出现Comare时后面的都不需要fit,先记录下有几Compare个
+        #当出现Comare时后面的都不需要fit,需要跳过
         if(OneLine[0] == 'Compare'):
-            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-            CompareDataCount = 1
+            Needignore = True
 
-        #后面都是compare,都需要+1
-        if(CompareDataCount):
-            CompareDataCount = CompareDataCount + 1
+        #后面都是compare,都需要跳过
+        if(Needignore):
+            continue
 
         if(OneLine[2] == '0'):#unused跳过
             continue
@@ -107,27 +106,19 @@ def Fit(fileName, reactionnum):
         M.append(float(OneLine[15]))
         interval.append(int(OneLine[20]))
 
-    #print(M)
-
     rangeGap = []
     allTemp = []
 
-    intervafd = open('interval','w+')
+    #intervafd = open('interval','w+')
     
     for i in range(len(TempLow)):
         OneGap = GetGap(TempLow[i],TempHigh[i],interval[i])
         OneGap = np.array(OneGap)
-
-        #如果次时遍历到了compare,需要把他们单独存放，防止参与拟合
-        if(i > len(TempLow)-CompareDataCount):
-            Comparex.append(OneGap)
-        else:
-            allTemp.extend(OneGap)
-
-        #rangeGap里面存放的是包含compare的数据
+        allTemp.extend(OneGap)
         rangeGap.append(OneGap)
-    intervafd.write(str(Comparex))
-    intervafd.close()
+
+    # intervafd.write(str(Comparex))
+    # intervafd.close()
     #print(rangeGap)
     K = []
     koriginal=[]
@@ -142,14 +133,8 @@ def Fit(fileName, reactionnum):
     for i in range(len(TempLow)):
         OneK = (np.log(A[i])+N[i]*np.log(rangeGap[i])+(-EAR[i]/rangeGap[i])+np.log(1/M[i]))/np.log(10)
         oriK=A[i]*rangeGap[i]**N[i]*np.exp(-EAR[i]/rangeGap[i])*(1/M[i])
-
-        #如果遍历到了compare，需要把他们单独存放，防止参与拟合
-        if(i > len(TempLow)-CompareDataCount):
-            Comparey.append(OneK)
-        else:
-            allK.extend(OneK)
-            koriginal.extend(oriK)
-        
+        allK.extend(OneK)
+        koriginal.extend(oriK)
         K.append(OneK)
 
     T_K=pd.DataFrame()
@@ -161,34 +146,12 @@ def Fit(fileName, reactionnum):
     # fd.write(str(K))
     # fd.close()
     
-    A,n,EAR,xvals,yvals = FitHandler(allTemp, allK)
+    A,n,EAR = FitHandler(allTemp, allK)
     Name.append('fit')
     #print(Name)
-    plt.rcParams['xtick.direction'] = 'in'#将x周的刻度线方向设置向内
-    plt.rcParams['ytick.direction'] = 'in'#将y轴的刻度方向设置向内
     for index, plotindex in enumerate(K):
-        if(index > len(TempLow)-CompareDataCount):
-            continue
-        plt.plot(1000./rangeGap[index],plotindex,markes[index%len(markes)],markersize=5)
-    
-    #taotao/henry
-    color=["aqua","m","g","b"]
-    #color=["aqua","m","r","b"]
-    for i in range(CompareDataCount-1):
-        plt.plot(1000./Comparex[i],Comparey[i],linewidth=1.5, color=color[i])
-
-    #fit 
-    plt.plot(xvals, yvals, color="red", linewidth=1.0)
-
-
-    plt.legend(Name,loc=2, bbox_to_anchor=(1.05,1.0),borderaxespad = 0.,  ncol = 2)
-    plt.xlim((0, 5))
-    plt.ylim((0, 15))
-    plt.xlabel("1000/T",fontsize=14)
-    plt.ylabel("log$_{10}$(k)",fontsize=14)
-    plt.title("Arrhenius plot")
-    plt.grid()#添加网格
-    #plt.legend('fit')
+        plt.plot(1000./rangeGap[index],plotindex)
+        plt.legend(Name)
     plt.show()
     return A,round(n,2),round(EAR,6)
 

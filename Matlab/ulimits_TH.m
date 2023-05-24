@@ -69,15 +69,21 @@ while (isequal(useall,'n')==1)
 
     [N,M]=size(Tlower);
     
-    HaveCompareFlag = 0;
+    CompareCount = 0;
     for i=1:N
         if(strcmp(paper_type(i),'Compare') == 1)
-            N = N - 2;
-            HaveCompareFlag = 1;
+            CompareCount = CompareCount + 1;
+            continue;
+        end
+
+        if(CompareCount > 0)
+            CompareCount = CompareCount + 1;
         end
     end
 
-    if(HaveCompareFlag == 1)
+    N = N - CompareCount;%如果compare有3个就减3
+
+    if(CompareCount > 0)
         paper_ID = paper_ID(1:N);
         paper_type = paper_type(1:N);
     end

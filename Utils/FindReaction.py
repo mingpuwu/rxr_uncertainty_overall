@@ -70,7 +70,8 @@ def FindReaction(excelname,needtype = '',ttname = '', henryname = ''):
                         henrrydata.append(splitdata[2])
                         henrrydata.append(splitdata[3].replace('/',''))
                     else:
-                        splitdata = alldata[index]
+                        splitdata = alldata[index].split()
+                        print(splitdata)
                         henrrydata.append(splitdata[1])
                         henrrydata.append(splitdata[2])
                         henrrydata.append(splitdata[3])
