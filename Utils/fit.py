@@ -9,7 +9,7 @@ from Utils.GetGap import GetGap
 #fileName = "UQ_143_all.txt"
 markes = ['o', 's', '^', 'p', '^', 'v', 'p', 'd', 'h', 
           '2', '8','g.','b^','yo','bp','gs','kx','rv',
-          'bd','y1','-','|','d','D','x','+','H','h','*','p','s']
+          'bd','y1','|','d','D','x','+','H','h','*','p','s']
 
 def func(T, A, n, EAR):
     return (np.log(A)+n*np.log(T)+(-EAR/T))/np.log(10)
@@ -63,7 +63,7 @@ def Fit(fileName, reactionnum):
     CompareDataCount = 0
     Comparex = []
     Comparey = []
-    fd = open(fileName)
+    fd = open(fileName,encoding="utf-8")
     allData = fd.readlines()
     Name = []
     TempLow = []
@@ -163,20 +163,31 @@ def Fit(fileName, reactionnum):
     
     A,n,EAR,xvals,yvals = FitHandler(allTemp, allK)
     Name.append('fit')
+    #print(Name)
+    plt.rcParams['xtick.direction'] = 'in'#将x周的刻度线方向设置向内
+    plt.rcParams['ytick.direction'] = 'in'#将y轴的刻度方向设置向内
     for index, plotindex in enumerate(K):
         if(index > len(TempLow)-CompareDataCount):
             continue
-        plt.plot(1000./rangeGap[index],plotindex,markes[index%len(markes)])
-
-    plt.plot(xvals,yvals,color="red",linewidth=2.0)
-
+        plt.plot(1000./rangeGap[index],plotindex,markes[index%len(markes)],markersize=5)
+    
+    #taotao/henry
+    color=["aqua","m","g","b"]
+    #color=["aqua","m","r","b"]
     for i in range(CompareDataCount-1):
-        plt.plot(1000./Comparex[i],Comparey[i],color="red",linewidth=2.0)
+        plt.plot(1000./Comparex[i],Comparey[i],linewidth=1.5, color=color[i])
 
-    plt.legend(Name,loc=2, bbox_to_anchor=(1.05,1.0),borderaxespad = 0.)
+    #fit 
+    plt.plot(xvals, yvals, color="red", linewidth=1.0)
 
-    plt.xlabel("1000/T")
-    plt.ylabel("log_10(k)")
+
+    plt.legend(Name,loc=2, bbox_to_anchor=(1.05,1.0),borderaxespad = 0.,  ncol = 2)
+    plt.xlim((0, 5))
+    plt.ylim((0, 15))
+    plt.xlabel("1000/T",fontsize=14)
+    plt.ylabel("log$_{10}$(k)",fontsize=14)
+    plt.title("Arrhenius plot")
+    plt.grid()#添加网格
     #plt.legend('fit')
     plt.show()
     return A,round(n,2),round(EAR,6)

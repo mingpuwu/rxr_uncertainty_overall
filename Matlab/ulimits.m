@@ -562,7 +562,7 @@ while (isequal(useall,'n')==1)
 
     p = [p1' p2 p3 p4 p5 p6]
 
-    gridLegend(p,3,strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside')
+    gridLegend(p,2,strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside')
     hold on
 
     %plot(1000./Xnew_gp(end,:),Ynew_gp(end,:),'-r','Linewidth',1.5)

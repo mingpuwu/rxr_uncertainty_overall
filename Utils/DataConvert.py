@@ -95,7 +95,9 @@ def ConvertData(excelname, outname, IsReverse = False ,needorder = 2, reactionty
                 A_temp = float(A_temp)
             
             #2阶
-            if(needorder == 2):
+            if(needorder == 1):
+                A = (A_temp)*((1/298)**N)
+            elif(needorder == 2):
                 A = (A_temp*6.023E+23)*((1/298)**N)
             else:#3阶
                 A = (A_temp*(6.023E+23**2))*((1/298)**N)
