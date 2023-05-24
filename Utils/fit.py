@@ -74,17 +74,20 @@ def Fit(fileName, reactionnum):
     EAR = []
     M = []
     interval = []
+
     for i in allData:
         OneLine = i.split()
+
+        #fit不参与拟合
         if(OneLine[1] == 'fit'):
             continue
 
-        #当出现Comare时后面的都不需要fit,把DonNeedFit置为true
+        #当出现Comare时后面的都不需要fit,先记录下有几Compare个
         if(OneLine[0] == 'Compare'):
+            print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             CompareDataCount = 1
 
-
-        #DonNeedFit 为true时后面的数据都不需要fit
+        #后面都是compare,都需要+1
         if(CompareDataCount):
             CompareDataCount = CompareDataCount + 1
 
@@ -108,16 +111,22 @@ def Fit(fileName, reactionnum):
 
     rangeGap = []
     allTemp = []
+
     intervafd = open('interval','w+')
+    
     for i in range(len(TempLow)):
         OneGap = GetGap(TempLow[i],TempHigh[i],interval[i])
         OneGap = np.array(OneGap)
-        if(i >= len(TempLow)-CompareDataCount):
+
+        #如果次时遍历到了compare,需要把他们单独存放，防止参与拟合
+        if(i > len(TempLow)-CompareDataCount):
             Comparex.append(OneGap)
         else:
             allTemp.extend(OneGap)
+
+        #rangeGap里面存放的是包含compare的数据
         rangeGap.append(OneGap)
-    intervafd.write(str(rangeGap))
+    intervafd.write(str(Comparex))
     intervafd.close()
     #print(rangeGap)
     K = []
@@ -133,25 +142,29 @@ def Fit(fileName, reactionnum):
     for i in range(len(TempLow)):
         OneK = (np.log(A[i])+N[i]*np.log(rangeGap[i])+(-EAR[i]/rangeGap[i])+np.log(1/M[i]))/np.log(10)
         oriK=A[i]*rangeGap[i]**N[i]*np.exp(-EAR[i]/rangeGap[i])*(1/M[i])
-        koriginal.extend(oriK)
-        if(i >= len(TempLow)-CompareDataCount):
+
+        #如果遍历到了compare，需要把他们单独存放，防止参与拟合
+        if(i > len(TempLow)-CompareDataCount):
             Comparey.append(OneK)
         else:
             allK.extend(OneK)
+            koriginal.extend(oriK)
+        
         K.append(OneK)
-    # T_K=pd.DataFrame()
-    # T_K["allTemp"]=allTemp
-    # T_K["koriginal"]=koriginal
-    # T_K.sort_values(by="allTemp",inplace=True,ascending=True)
-    # print(T_K)
-    # T_K.to_excel(str(reactionnum)+".xlsx")
+
+    T_K=pd.DataFrame()
+    T_K["allTemp"]=allTemp
+    T_K["koriginal"]=koriginal
+    T_K.sort_values(by="allTemp",inplace=True,ascending=True)
+    #print(T_K)
+    T_K.to_excel(str(reactionnum)+".xlsx")
     # fd.write(str(K))
     # fd.close()
     
     A,n,EAR,xvals,yvals = FitHandler(allTemp, allK)
     Name.append('fit')
     for index, plotindex in enumerate(K):
-        if(index >= len(TempLow)-CompareDataCount):
+        if(index > len(TempLow)-CompareDataCount):
             continue
         plt.plot(1000./rangeGap[index],plotindex,markes[index%len(markes)])
 

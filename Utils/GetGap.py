@@ -29,7 +29,7 @@ def gap(templow, temphigh, interval):
 def GetGap(templow, temphigh, interval = 0):
     #如果给定了这个值的话，按照给定的值来
     if(interval != 0):
-        print("--------------interval is :",interval)
+        #print("--------------interval is :",interval)
         return gap(templow, temphigh, interval)
     
     #如果没有给inteval,自己判定
@@ -39,5 +39,5 @@ def GetGap(templow, temphigh, interval = 0):
         interval = 50
     else:
         interval = 100
-    print("--------------interval is :",interval)
+    #print("--------------interval is :",interval)
     return gap(templow, temphigh, interval)

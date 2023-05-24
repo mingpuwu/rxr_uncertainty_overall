@@ -47,7 +47,7 @@ def ConvertData(excelname, outname, IsReverse = False ,needorder = 2, reactionty
         if(pd.notna(row['Squib']) and pd.isna(row['A'])):
             continue
         
-        print(row['Squib'])
+        #print(row['Squib'])
         datasave.loc[datasave.shape[0]] = row
 
     newData = pd.DataFrame(columns=['Plot','Squib','Use','low','high','A','n','E/R','k0','Order','11','12','13','14','15','16','17','18','19','20','21'])
@@ -133,6 +133,7 @@ def ConvertData(excelname, outname, IsReverse = False ,needorder = 2, reactionty
 
     fd = open(outname,'w+')
 	
+    #反向的时候需要在前面加一些数据
     if(IsReverse):
         for index, row in newData.iterrows():
             oneLine = reaction+' '+"{:.3e}".format(row['A'])+\
