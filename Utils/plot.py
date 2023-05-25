@@ -7,7 +7,7 @@ markes = ['o', 's', '^', 'p', '^', 'v', 'p', 'd', 'h',
           '2', '8','g.','b^','yo','bp','gs','kx','rv',
           'bd','y1','|','d','D','x','+','H','h','*','p','s']
 
-def Plot(filename):
+def Plot(filename, xlim=5,ylim_max=14.5, ylim_min=12, ncol=1):
     fd = open(filename,encoding="utf-8")
 
     alllines = fd.readlines()
@@ -19,7 +19,7 @@ def Plot(filename):
     otherdata = []
     othername = []
     allname = []
-
+    CurrentName = ''
     for i in alllines:
         OneLine = i.split()
 
@@ -39,8 +39,14 @@ def Plot(filename):
             HighTemp = int(OneLine[4])
 
         interval = int(OneLine[20])
-
-        allname.append(name)
+        if(len(CurrentName) == 0):
+            CurrentName = OneLine[0]
+        
+        if(CurrentName != OneLine[0] and OneLine[0] != '0'):
+            CurrentName = OneLine[0]
+        
+        allname.append(CurrentName+';'+OneLine[1])
+        #allname.append(name)
 
         if(OneLine[1] == 'fit'):
             t = GetGap(300,2500,100)
@@ -85,10 +91,10 @@ def Plot(filename):
 
     
     #print(allname)
-    plt.legend(allname,loc=2, bbox_to_anchor=(1.0,1.0),borderaxespad = 0.,  ncol = 2)
+    plt.legend(allname,loc=2, bbox_to_anchor=(1.01,1.0),borderaxespad = 0.,  ncol = ncol)
     #plt.legend(allname)
-    # plt.xlim((0, 5))
-    # plt.ylim((0, 15))
+    plt.xlim((0, xlim))
+    plt.ylim((ylim_min, ylim_max))
     plt.xlabel("1000/T",fontsize=14)
     plt.ylabel("log$_{10}$(k)",fontsize=14)
     plt.title("Arrhenius plot")
