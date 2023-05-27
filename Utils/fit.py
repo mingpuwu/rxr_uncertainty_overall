@@ -5,6 +5,9 @@ import math
 from scipy.optimize import curve_fit
 from sklearn.metrics import r2_score
 from Utils.GetGap import GetGap
+from Utils.GetFileDir import GetFileDir
+from Utils.GetReactionNum import GetReactionNum
+import os
 
 #fileName = "UQ_143_all.txt"
 markes = ['o', 's', '^', 'p', '^', 'v', 'p', 'd', 'h', 
@@ -142,7 +145,8 @@ def Fit(fileName, reactionnum):
     T_K["koriginal"]=koriginal
     T_K.sort_values(by="allTemp",inplace=True,ascending=True)
     #print(T_K)
-    T_K.to_excel(str(reactionnum)+".xlsx")
+    reactionnum = GetReactionNum()
+    T_K.to_excel(os.path.join(GetFileDir(reactionnum,'dir'),str(reactionnum)+".xlsx"))
     # fd.write(str(K))
     # fd.close()
     

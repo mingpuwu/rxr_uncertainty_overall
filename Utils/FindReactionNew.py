@@ -10,6 +10,8 @@ henrrydata = []
 def FindReaction(excelname,needtype = '',ttname = '', henryname = ''):
     ttreaction = ''
     excelname = os.path.basename(excelname)
+    reaction = excelname[excelname.find('_')+1:excelname.find('.')]
+    print(reaction)
     name = excelname.split('_')
     ttreaction = name[1]
     ttreaction = ttreaction + '<=>'

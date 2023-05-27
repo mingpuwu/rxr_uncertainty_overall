@@ -574,13 +574,13 @@ while (isequal(useall,'n')==1)
     
     title('Arrhenius plot')
 
-    gridLegend(p,2,strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside');
+    % gridLegend(p,2,strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside');
     hold on
 
     %plot(1000./Xnew_gp(end,:),Ynew_gp(end,:),'-r','Linewidth',1.5)
     %title('Arrhenius plot')
     %hold on
-    %legend(strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside')
+    legend(strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside')
 
     hold on
 

@@ -2,6 +2,8 @@ import os
 from Utils.GetGap import GetGap
 import numpy as np
 import matplotlib.pyplot as plt
+from Utils.GetFileDir import GetFileDir
+from Utils.GetReactionNum import GetReactionNum
 
 markes = ['o', 's', '^', 'p', '^', 'v', 'p', 'd', 'h', 
           '2', '8','g.','b^','yo','bp','gs','kx','rv',
@@ -99,7 +101,8 @@ def Plot(filename, xlim=5,ylim_max=14.5, ylim_min=12, ncol=1):
     plt.ylabel("log$_{10}$(k)",fontsize=14)
     plt.title("Arrhenius plot")
     plt.grid()#添加网格
-
+    reactionnum = GetReactionNum()
+    plt.savefig(os.path.join(GetFileDir(reactionnum,'dir'),'python.png'),dpi=200, bbox_inches='tight')
     plt.show()
 
 if __name__ == '__main__':
