@@ -5,7 +5,7 @@ import os
 
 needProcessParticularA = True  #是否要处理特殊的A
 
-M_dict = {'Ar':0.7,'He':0.7,'N2':1}
+M_dict = {'Ar':0.67,'He':0.7,'N2':1,"H2O":8.33}
 
 def DeleteNullColumsAndNoCheck(data):
     firstLine = data.columns

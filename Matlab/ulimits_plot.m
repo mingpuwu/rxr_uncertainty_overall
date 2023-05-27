@@ -574,13 +574,13 @@ while (isequal(useall,'n')==1)
     
     title('Arrhenius plot')
 
-    % gridLegend(p,2,strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside');
+    gridLegend(p,2,strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside');
     hold on
 
     %plot(1000./Xnew_gp(end,:),Ynew_gp(end,:),'-r','Linewidth',1.5)
     %title('Arrhenius plot')
     %hold on
-    legend(strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside')
+    %legend(strcat(full_paper_type_new,';',full_paper_ID_new),'location','EastOutside')
 
     hold on
 
@@ -1008,24 +1008,13 @@ end
         figure(4)
         plot(1000./Xnew',Ynew','--.','LineWidth',0.2)
         hold on
-        plot(1000./tt_Xnew(1,:),tt_Ynew(1,:),'Color',[0.1 0.8 0.9] ,'Linewidth',1.5)%'Color',[0.1 0.6 0.1] NPU;'Color',[0.1 0.8 0.9] Taotao; '-m' henry
-        hold on
-        plot(1000./tt_Xnew(2,:),tt_Ynew(2,:),'-m','Linewidth',1.5)
-        %hold on
-        %plot(1000./tt_Xnew(3,:),tt_Ynew(3,:),'Color',[0.1 0.6 0.1],'Linewidth',1.5)
-        %hold on
-        %plot(1000./tt_Xnew(4,:),tt_Ynew(4,:),'Color',[0.6 0.3 0.4],'Linewidth',1.5)
+        plot(1000./tt_Xnew',tt_Ynew','-','Linewidth',2)
         xlabel('1000/T')
         ylabel('log_{10}(k)')
         grid on
         hold on
         plot(1000./Xrange(Xsize_1,:),Yrange(Xsize_1,:),'-r','Linewidth',1.5)
-        hold on   
-        %second_data
-        %length(1000./second_data(:,1))%12
-        %length(recommended'+second_data(:,5))
-        %length(recommended')%23
-        %length(second_data(:,5))%12
+        hold on          
         plot(1000./second_data(:,1),recommended'+second_data(:,5),'b','LineWidth',2)
         plot(1000./second_data(:,1),recommended'-second_data(:,5),'b','LineWidth',2)
         title('Arrhenius plot with main +/- f_{prior}(T) points added')
